@@ -56,6 +56,26 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/userPage");
 };
 
+export const signInGoogle = async () => {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${process.env.LOCAL_URL}auth/callback`,
+    },
+  });
+
+  if (error) {
+    return encodedRedirect("error", "/sign-in", error.message);
+  }
+
+  if (data.url) {
+    redirect(data.url)
+  }
+};
+
+
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -67,7 +87,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+    redirectTo: `${origin}/auth/callback?redirect_to=/userPage/reset-password`,
   });
 
   if (error) {
@@ -99,7 +119,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (!password || !confirmPassword) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
+      "/userPage/reset-password",
       "Password and confirm password are required",
     );
   }
@@ -107,7 +127,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (password !== confirmPassword) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
+      "/userPage/reset-password",
       "Passwords do not match",
     );
   }
@@ -119,12 +139,12 @@ export const resetPasswordAction = async (formData: FormData) => {
   if (error) {
     encodedRedirect(
       "error",
-      "/protected/reset-password",
+      "/userPage/reset-password",
       "Password update failed",
     );
   }
 
-  encodedRedirect("success", "/protected/reset-password", "Password updated");
+  encodedRedirect("success", "/userPage/reset-password", "Password updated");
 };
 
 export const signOutAction = async () => {
