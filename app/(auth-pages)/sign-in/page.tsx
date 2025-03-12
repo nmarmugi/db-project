@@ -14,7 +14,10 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         <h1 className="text-2xl font-medium">Sign in</h1>
         <p className="text-sm text-foreground">
           Don't have an account?{" "}
-          <Link className="text-foreground font-medium underline" href="/sign-up">
+          <Link
+            className="text-foreground font-medium underline"
+            href="/sign-up"
+          >
             Sign up
           </Link>
         </p>
@@ -39,16 +42,21 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
           <SubmitButton pendingText="Signing In..." formAction={signInAction}>
             Sign in
           </SubmitButton>
-          <FormMessage message={searchParams} />
+          {searchParams.error ||
+            searchParams.success ||
+            (searchParams.message && <FormMessage message={searchParams} />)}
         </div>
       </form>
       <form className="flex-1 flex flex-col min-w-64">
         <SubmitButton pendingText="Signing In..." formAction={signInGoogle}>
           <div className="flex gap-2">
-            <Image src='/googleIcon.png' alt='Google Icon' width={20} height={20} />
-            <span>
-              Continue with Google
-            </span>
+            <Image
+              src="/googleIcon.png"
+              alt="Google Icon"
+              width={20}
+              height={20}
+            />
+            <span>Continue with Google</span>
           </div>
         </SubmitButton>
       </form>

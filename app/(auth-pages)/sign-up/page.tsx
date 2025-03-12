@@ -12,7 +12,9 @@ export default async function Signup(props: {
   if ("message" in searchParams) {
     return (
       <div className="w-full flex-1 flex items-center h-screen sm:max-w-md justify-center gap-2 p-4">
-        <FormMessage message={searchParams} />
+        {searchParams.error ||
+          searchParams.success ||
+          (searchParams.message && <FormMessage message={searchParams} />)}
       </div>
     );
   }
@@ -41,7 +43,9 @@ export default async function Signup(props: {
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>
-          <FormMessage message={searchParams} />
+          {searchParams.error ||
+            searchParams.success ||
+            (searchParams.message && <FormMessage message={searchParams} />)}
         </div>
       </form>
     </>

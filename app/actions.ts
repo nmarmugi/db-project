@@ -19,13 +19,25 @@ export const signUpAction = async (formData: FormData) => {
     );
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
     },
   });
+
+  if (data && data.user) {
+    if (data.user.identities && data.user.identities.length > 0) {
+      console.log("Sign-up successful!");
+    } else {
+      return encodedRedirect(
+        "error",
+        "/sign-up",
+        "Email address is already taken",
+      );
+    }
+  }
 
   if (error) {
     console.error(error.code + " " + error.message);
