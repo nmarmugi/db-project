@@ -164,3 +164,24 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export async function getUserProfiles() {
+  const supabase = await createClient();
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('No user is logged in or error occurred:', userError);
+    return null;
+  }
+
+  const { data, error } = await supabase.from('user_profiles').select('*').eq('user_id', user.id).single();
+
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
+
+  return data;
+}
+
