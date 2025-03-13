@@ -156,7 +156,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     );
   }
 
-  encodedRedirect("success", "/userPage/reset-password", "Password updated");
+  encodedRedirect("success", "/userPage", "Password updated");
 };
 
 export const signOutAction = async () => {
