@@ -3,6 +3,7 @@ import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import LinkClient from "./linkClient";
 
 export default async function AuthButton() {
   const supabase = await createClient();
@@ -47,7 +48,7 @@ export default async function AuthButton() {
           Sign out
         </Button>
       </form>
-      <Link href="/settings">Settings</Link>
+      <LinkClient />
     </div>
   ) : (
     <div className="flex gap-2">

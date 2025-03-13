@@ -1,10 +1,10 @@
 import { getUserProfiles } from "../actions";
 
-export default function SettingsPage() {
-    getUserProfiles();
+export default async function SettingsPage() {
+    const user = await getUserProfiles();
     return (
         <div>
-            Settings
+           Level {user.level}
         </div>
     );
 }
