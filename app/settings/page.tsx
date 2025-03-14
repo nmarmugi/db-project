@@ -1,10 +1,9 @@
-import { getUserProfiles } from "../actions";
+import UserData from "./components/userData";
 
-export default async function SettingsPage() {
-    const user = await getUserProfiles();
-    return (
-        <div>
-           Level {user.level}
-        </div>
-    );
+export default function SettingsPage() {
+  return (
+    <div>
+      <UserData />
+    </div>
+  );
 }

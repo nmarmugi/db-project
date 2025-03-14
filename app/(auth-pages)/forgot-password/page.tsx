@@ -15,7 +15,7 @@ export default async function ForgotPassword(props: {
         <div>
           <h1 className="text-2xl font-medium">Reset Password</h1>
           <p className="text-sm text-secondary-foreground">
-            Already have an account?{" "}
+            Already have an account?
             <Link className="text-primary underline" href="/sign-in">
               Sign in
             </Link>
@@ -27,9 +27,9 @@ export default async function ForgotPassword(props: {
           <SubmitButton formAction={forgotPasswordAction}>
             Reset Password
           </SubmitButton>
-          {searchParams.error ||
-            searchParams.success ||
-            (searchParams.message && <FormMessage message={searchParams} />)}
+          {(searchParams.error || searchParams.success || searchParams.message) && (
+            <FormMessage message={searchParams} />
+          )}
         </div>
       </form>
     </>
