@@ -1,6 +1,8 @@
 'use client';
 
 import { ContextUser } from "@/components/providers/ProviderUser";
+import StarRating from "@/components/ui/StarRating";
+import { Flex, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 
 export default function UserData() {
@@ -13,8 +15,9 @@ export default function UserData() {
   const { user } = context;
 
   return (
-    <div>
-      Level {user.level}
-    </div>
+    <Flex gap={2}>
+      <Text as='span'>Rating</Text>
+      <StarRating size={'24px'} defaultValue={user.level} />
+    </Flex>
   );
 }
