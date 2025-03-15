@@ -185,3 +185,55 @@ export async function getUserProfiles() {
   return data;
 }
 
+export async function updateUsername(newUsername: string) {
+  const supabase = await createClient();
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('No user is logged in or error occurred:', userError);
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .update({ username: newUsername })
+    .eq('user_id', user.id)
+    .single();
+
+  if (error) {
+    console.error('Error updating username:', error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function updateBirthday(newBirthday: string) {
+  const supabase = await createClient();
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('No user is logged in or error occurred:', userError);
+    return null;
+  }
+
+  if (!newBirthday || isNaN(new Date(newBirthday).getTime())) {
+    console.error('Invalid date format:', newBirthday);
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .update({ date_of_birth: newBirthday })
+    .eq('user_id', user.id)
+    .single();
+
+  if (error) {
+    console.error('Error updating date of birth:', error);
+    return null;
+  }
+
+  return data;
+}

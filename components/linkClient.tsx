@@ -1,6 +1,7 @@
 'use client';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FiHome, FiSettings } from 'react-icons/fi';
 
 export default function LinkClient() {
     const pathname = usePathname();
@@ -8,9 +9,13 @@ export default function LinkClient() {
     return (
         <>
             {pathname === '/settings' ? (
-                <Link href="/userPage">HOME</Link>
+                <Link href="/userPage">
+                    <FiHome />
+                </Link>
             ) : pathname === '/userPage' ? (
-                <Link href="/settings">Settings</Link>
+                <Link href="/settings">
+                    <FiSettings />
+                </Link>
             ) : null}
         </>
     );

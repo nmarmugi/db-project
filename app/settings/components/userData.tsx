@@ -1,9 +1,11 @@
 'use client';
 
 import { ContextUser } from "@/components/providers/ProviderUser";
-import StarRating from "@/components/ui/StarRating";
-import { Flex, Text } from "@chakra-ui/react";
-import { useContext } from "react";
+import { Flex} from "@chakra-ui/react";
+import { useContext} from "react";
+import UpdateUsername from "./UpdateUsername";
+import UpdateBirthDate from "./UpdateBirthDate";
+import DeleteUserButton from "./DeleteUserButton";
 
 export default function UserData() {
   const context = useContext(ContextUser);
@@ -15,9 +17,10 @@ export default function UserData() {
   const { user } = context;
 
   return (
-    <Flex gap={2}>
-      <Text as='span'>Rating</Text>
-      <StarRating size={'24px'} defaultValue={user.level} />
+    <Flex gap={5} direction='column'>
+      <UpdateUsername user={user} />
+      <UpdateBirthDate user={user} />
+      <DeleteUserButton />
     </Flex>
   );
 }

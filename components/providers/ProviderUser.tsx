@@ -3,7 +3,7 @@
 import { getUserProfiles } from '@/app/actions';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 
-interface User {
+export interface User {
   id: number;
   user_id: string;
   username: string;
@@ -12,6 +12,8 @@ interface User {
   created_at: string;
   updated_at: string;
   xp: number;
+  wins: number;
+  defeats: number;
 }
 
 interface ContextUserType {
