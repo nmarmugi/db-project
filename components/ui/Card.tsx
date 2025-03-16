@@ -9,7 +9,7 @@ interface CardBTVProps {
 export default function CardBTV({ children }: CardBTVProps) {
 	const {theme} = useTheme();
 	return (
-		<Card background={theme !== 'dark' && 'black'}>
+		<Card className="w-[190px]" background={theme !== 'dark' && 'black'}>
 			<CardBody className={`${theme !== 'dark' && 'text-white'} flex justify-start items-center gap-3`}>
 				{children}
 			</CardBody>

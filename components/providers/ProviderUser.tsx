@@ -7,7 +7,6 @@ export interface User {
   id: number;
   user_id: string;
   username: string;
-  date_of_birth: string | null;
   level: number;
   created_at: string;
   updated_at: string;

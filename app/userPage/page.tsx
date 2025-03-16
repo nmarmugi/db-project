@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Carousel from "./components/Carousel";
 
 export default async function UserPage() {
   const supabase = await createClient();
@@ -13,10 +14,8 @@ export default async function UserPage() {
   }
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
       <div className="w-full">
-
+        <Carousel />
       </div>
-    </div>
   );
 }
