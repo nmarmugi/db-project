@@ -237,3 +237,104 @@ export async function updateBirthday(newBirthday: string) {
 
   return data;
 }
+
+export async function getUsersProfiles() {
+  const supabase = await createClient();
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('No user is logged in or error occurred:', userError);
+    return null;
+  }
+
+  const { data, error } = await supabase.from('user_profiles').select('*');
+
+  if (error) {
+    console.error('Error fetching user profile:', error);
+    return null;
+  }
+
+  const filteredProfiles = data?.filter(profile => profile.user_id !== user.id);
+
+  return filteredProfiles;
+}
+
+export async function sendFriendRequest(receiverId: string) {
+  const supabase = await createClient();
+
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    console.error('No user is logged in or error occurred:', userError);
+    return null;
+  }
+
+  const senderId = user.id;
+
+  const { data, error } = await supabase
+    .from('friend_requests')
+    .insert([{ sender_id: senderId, receiver_id: receiverId, status: 'pending' }])
+    .select('*');
+
+  if (error) {
+    console.error('Error sending friend request:', error);
+    return null;
+  }
+
+  const { data: senderProfile, error: senderError } = await supabase
+    .from('user_profiles')
+    .select('sent_friend_requests')
+    .eq('user_id', senderId)
+    .single();
+
+  if (senderError) {
+    console.error('Error fetching sender profile:', senderError);
+    return null;
+  }
+
+  const updatedSentRequests = [...(senderProfile?.sent_friend_requests || []), {
+    sender_id: senderId,
+    receiver_id: receiverId,
+    status: 'pending'
+  }];
+
+  const { error: updateError } = await supabase
+    .from('user_profiles')
+    .update({ sent_friend_requests: updatedSentRequests })
+    .eq('user_id', senderId);
+
+  if (updateError) {
+    console.error('Error updating sent_friend_requests:', updateError);
+    return null;
+  }
+
+  const { data: receiverProfile, error: receiverError } = await supabase
+    .from('user_profiles')
+    .select('received_friend_requests')
+    .eq('user_id', receiverId)
+    .single();
+
+  if (receiverError) {
+    console.error('Error fetching receiver profile:', receiverError);
+    return null;
+  }
+
+  const updatedReceivedRequests = [...(receiverProfile?.received_friend_requests || []), {
+    sender_id: senderId,
+    receiver_id: receiverId,
+    status: 'pending'
+  }];
+
+  const { error: receiverUpdateError } = await supabase
+    .from('user_profiles')
+    .update({ received_friend_requests: updatedReceivedRequests })
+    .eq('user_id', receiverId);
+
+  if (receiverUpdateError) {
+    console.error('Error updating received_friend_requests:', receiverUpdateError);
+    return null;
+  }
+
+  return data;
+}

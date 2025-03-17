@@ -67,10 +67,25 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "scroll-x-infinit-1280": {
+          "0%": { transform: "translateX(1280px)" },
+          "100%": { transform: "translateX(-1280px)" }
+        },
+        "scroll-x-infinit-900": {
+          "0%": { transform: "translateX(900px)" },
+          "100%": { transform: "translateX(-900px)" }
+        },
+        "scroll-x-infinit-700": {
+          "0%": { transform: "translateX(700px)" },
+          "100%": { transform: "translateX(-700px)" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "scroll-x-infinit-1280": "scroll-x-infinit-1280 15s linear infinite",
+        "scroll-x-infinit-900": "scroll-x-infinit-900 20s linear infinite",
+        "scroll-x-infinit-700": "scroll-x-infinit-700 25s linear infinite",
       },
     },
   },

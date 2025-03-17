@@ -3,6 +3,12 @@
 import { getUserProfiles } from '@/app/actions';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 
+export interface FriendRequests {
+  status: string;
+  sender_id: string;
+  receiver_id: string;
+}
+
 export interface User {
   id: number;
   user_id: string;
@@ -13,6 +19,8 @@ export interface User {
   xp: number;
   wins: number;
   defeats: number;
+  sent_friend_requests: FriendRequests[] | null;
+  received_friend_requests: FriendRequests[] | null;
 }
 
 interface ContextUserType {

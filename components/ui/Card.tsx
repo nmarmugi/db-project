@@ -4,12 +4,13 @@ import { useTheme } from "next-themes";
 
 interface CardBTVProps {
 	children: ReactNode;
+	className: string;
 }
 
-export default function CardBTV({ children }: CardBTVProps) {
+export default function CardBTV({ children, className }: CardBTVProps) {
 	const {theme} = useTheme();
 	return (
-		<Card className="w-[190px]" background={theme !== 'dark' && 'black'}>
+		<Card className={className} background={theme !== 'dark' && 'black'}>
 			<CardBody className={`${theme !== 'dark' && 'text-white'} flex justify-start items-center gap-3`}>
 				{children}
 			</CardBody>
