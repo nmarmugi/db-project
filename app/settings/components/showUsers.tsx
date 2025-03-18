@@ -40,8 +40,8 @@ export default function ShowUsers({ user }: ShowUsersProps) {
 
     const findUser: User[] = originalUsersProfile
       ? originalUsersProfile.filter((user) =>
-          user.username.toLowerCase().includes(value.toLowerCase())
-        )
+        user.username.toLowerCase().includes(value.toLowerCase())
+      )
       : [];
 
     setUsersProfile(findUser);
@@ -52,6 +52,20 @@ export default function ShowUsers({ user }: ShowUsersProps) {
     try {
       const response = await sendFriendRequest(id);
       if (response) {
+        setUsersProfile((prevUsers) =>
+          prevUsers
+            ? prevUsers.map((profile) =>
+              profile.user_id === id
+                ? {
+                  ...profile,
+                  received_friend_requests: profile.received_friend_requests
+                    ? [...profile.received_friend_requests, { sender_id: user.user_id, receiver_id: id, status: "pending" }]
+                    : [{ sender_id: user.user_id, receiver_id: id, status: "pending" }],
+                }
+                : profile
+            )
+            : null
+        );
         toast({
           title: "Friend request sent.",
           description: "Your friend request was sent successfully.",
@@ -107,15 +121,29 @@ export default function ShowUsers({ user }: ShowUsersProps) {
             </Box>
           ) : usersProfile && usersProfile.length > 0 ? (
             usersProfile.map((profile) => {
-              const hasReceivedRequest = profile.received_friend_requests?.some(
+              const hasSentRequest = profile.received_friend_requests?.some(
                 (req) => req.sender_id === user.user_id
+              );
+            
+              const hasReceivedRequest = profile.sent_friend_requests?.some(
+                (req) => req.receiver_id === user.user_id
               );
 
               return (
                 <Text className="flex items-center gap-3" key={profile.id}>
                   {profile.username}
-                  {!hasReceivedRequest && (
-                    <Button onClick={(e) => handleAddFriend(e)} id={profile.user_id} leftIcon={<FiPlusCircle className="cursor-pointer" />}>
+                  {hasReceivedRequest ? (
+                    <Button>
+                      Rispondi alla richiesta
+                    </Button>
+                  ) : hasSentRequest ? (
+                    <Text as='span'>Richiesta inviata</Text>
+                  ) : (
+                    <Button
+                      onClick={(e) => handleAddFriend(e)}
+                      id={profile.user_id}
+                      leftIcon={<FiPlusCircle className="cursor-pointer" />}
+                    >
                       Add friend
                     </Button>
                   )}

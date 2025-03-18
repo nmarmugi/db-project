@@ -25,7 +25,7 @@ export interface User {
 
 interface ContextUserType {
   user: User | null;
-  setUser: (user: User) => void;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
 export const ContextUser = createContext<ContextUserType | null>(null);

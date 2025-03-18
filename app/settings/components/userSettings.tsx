@@ -27,11 +27,11 @@ export default function UserData() {
     );
   }
 
-  const { user } = context;
+  const { user, setUser } = context;
 
   return (
     <Flex gap={5} direction='column' align='center'>
-      <UpdateUsername user={user} />
+      <UpdateUsername user={user} setUser={setUser} />
       <ShowUsers user={user} />
     </Flex>
   );

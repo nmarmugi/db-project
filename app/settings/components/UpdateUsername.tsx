@@ -1,5 +1,5 @@
-import { Flex, useToast, Button} from "@chakra-ui/react";
-import { useState } from "react";
+import { Flex, useToast, Button } from "@chakra-ui/react";
+import { SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FiCheck } from "react-icons/fi";
@@ -8,13 +8,14 @@ import { User } from "@/components/providers/ProviderUser";
 
 interface FormUpdatesUsernameProps {
 	user: User;
+	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-export default function UpdateUsername({ user }: FormUpdatesUsernameProps) {
+export default function UpdateUsername({ user, setUser }: FormUpdatesUsernameProps) {
 	const toast = useToast();
 	const [initialUsername] = useState(user.username);
 	const [username, setUsername] = useState(user.username);
-	
+
 	const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUsername(e.target.value);
 	};
@@ -22,6 +23,13 @@ export default function UpdateUsername({ user }: FormUpdatesUsernameProps) {
 	const handleClickSend = () => {
 		try {
 			updateUsername(username);
+			setUser((prevState) => {
+				if (!prevState) return null;
+				return {
+					...prevState,
+					username: username,
+				};
+			});
 			toast({
 				title: "Username updated",
 				description: "Your username has been updated successfully.",
@@ -39,7 +47,7 @@ export default function UpdateUsername({ user }: FormUpdatesUsernameProps) {
 			});
 		}
 	}
-	
+
 	const isUsernameChanged = username !== initialUsername;
 
 	return (
